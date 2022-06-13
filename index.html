@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockly</title>
+    <script src="node_modules/blockly/blockly_compressed.js"></script>
+    <script src="node_modules/blockly/blocks_compressed.js"></script>
+    <script src="node_modules/blockly/javascript_compressed.js"></script>
+    <script src="msg/js/en.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p>
+        <button onclick="runCode()">Run JS</button>
+    </p>
+    <div id="blocklyDiv" style="height: 480px; width: 600px"></div>
+
+    <xml id="toolbox" style="display: none;">
+    <category name="Logic">
+        <block type="lightswitch">
+            <field name="color">red</field>
+            <field name="switch">on</field>
+        </block>
+    </category>
+    </xml>
+
+    <div id="switch"></div>
+
+    <script>
+        const workspace = Blockly.inject('blocklyDiv' ,
+        {media: '../../media',
+        toolbox: document.getElementById('toolbox')});
+
+        function runCode() {
+            window.loopTrap = 1000;
+            Blockly.JavaScript.INFINITE_LOOP_TRAP = 
+                'if (--window.Looptrap == 0) throw "Infinite loop.";\n';
+            let code = Blockly.JavaScript.workspaceToCode(workspace);
+            Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+            try {
+                eval(code);
+            } catch (e) {
+                alert(e)
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+  
